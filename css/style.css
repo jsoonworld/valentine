@@ -115,11 +115,11 @@ button {
 
 .float-photo {
   position: absolute;
-  border-radius: 14px;
   object-fit: cover;
   opacity: 0;
   pointer-events: none;
-  box-shadow: 0 6px 20px rgba(201, 24, 74, 0.2);
+  clip-path: url(#heart-clip);
+  filter: drop-shadow(0 6px 12px rgba(201, 24, 74, 0.25));
   animation: floatPhoto var(--float-duration, 14s) ease-in-out forwards;
 }
 
