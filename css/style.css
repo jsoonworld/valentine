@@ -1,1 +1,418 @@
-/* Phase 2에서 스타일링 작성 예정 */
+/* ============================================
+   Valentine's Day Interactive Page - Styles
+   ============================================ */
+
+/* ----- 1. CSS Custom Properties ----- */
+
+:root {
+  /* Colors */
+  --color-bg: #fff0f3;
+  --color-primary: #ff4d6d;
+  --color-primary-dark: #c9184a;
+  --color-primary-light: #ff8fa3;
+  --color-success-bg: #ffe5ec;
+  --color-text: #590d22;
+  --color-white: #ffffff;
+
+  /* Fonts */
+  --font-main: 'Noto Sans KR', sans-serif;
+  --font-accent: 'Dancing Script', cursive;
+
+  /* Spacing */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  /* Button */
+  --btn-radius: 12px;
+  --btn-padding: 14px 32px;
+  --btn-font-size: 1.1rem;
+
+  /* Animation */
+  --transition-speed: 0.3s;
+}
+
+/* ----- 2. Base / Reset ----- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  font-family: var(--font-main);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ----- 3. Utility Classes ----- */
+
+.hidden {
+  display: none;
+}
+
+/* ----- 4. Screen Layout ----- */
+
+.screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* ----- 5. BGM Toggle ----- */
+
+.bgm-toggle {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-speed) ease,
+              transform var(--transition-speed) ease;
+  box-shadow: 0 2px 8px rgba(89, 13, 34, 0.1);
+}
+
+.bgm-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+}
+
+.bgm-toggle:active {
+  transform: scale(0.95);
+}
+
+/* ----- 6. Hearts Container ----- */
+
+.hearts-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ----- 7. Main Screen Content ----- */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-md);
+  max-width: 500px;
+  width: 100%;
+}
+
+/* ----- 8. Media Area ----- */
+
+.media-area {
+  margin-bottom: var(--spacing-lg);
+}
+
+.main-media {
+  max-width: 200px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(201, 24, 74, 0.15);
+}
+
+/* ----- 9. Title ----- */
+
+.title {
+  font-family: var(--font-accent);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-lg);
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(201, 24, 74, 0.1);
+}
+
+/* ----- 10. Button Group ----- */
+
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* ----- 11. Base Button ----- */
+
+.btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--transition-speed) ease,
+              background-color var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease;
+}
+
+/* ----- 12. Yes Button ----- */
+
+.btn--yes {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.35);
+}
+
+.btn--yes:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(201, 24, 74, 0.4);
+}
+
+.btn--yes:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 10px rgba(201, 24, 74, 0.3);
+}
+
+/* ----- 13. No Button ----- */
+
+.btn--no {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 2px 10px rgba(255, 77, 109, 0.1);
+}
+
+.btn--no:hover {
+  background-color: #fff0f3;
+  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2);
+}
+
+.btn--no:active {
+  transform: scale(0.97);
+}
+
+/* ----- 14. No Button - Escaped State ----- */
+
+.btn--no.escaped {
+  position: absolute;
+  transition: left 0.2s ease-out,
+              top 0.2s ease-out,
+              transform var(--transition-speed) ease;
+}
+
+/* ----- 15. Heart Particle Animation ----- */
+
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: floatHeart 6s ease-in forwards;
+  pointer-events: none;
+}
+
+@keyframes floatHeart {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg) scale(0.5);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100vh) rotate(720deg) scale(1.2);
+  }
+}
+
+/* ----- 16. Success Screen ----- */
+
+.screen--success {
+  background-color: var(--color-success-bg);
+  z-index: 2;
+  flex-direction: column;
+}
+
+.success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-md);
+  z-index: 3;
+  max-width: 500px;
+  width: 100%;
+}
+
+/* ----- 17. Success Image ----- */
+
+.success-media {
+  margin-bottom: var(--spacing-lg);
+}
+
+.success-image {
+  max-width: 280px;
+  max-height: 350px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(201, 24, 74, 0.2);
+  object-fit: cover;
+}
+
+/* ----- 18. Typing Text ----- */
+
+.typing-text {
+  font-family: var(--font-main);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: var(--spacing-md) 0 0;
+  min-height: 2em;
+  line-height: 1.6;
+}
+
+/* ----- 19. Confetti Container ----- */
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* ----- 20. Confetti Piece Animation ----- */
+
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 1;
+  animation: confettiFall 3s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotateZ(0deg);
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotateZ(720deg);
+  }
+}
+
+/* ============================================
+   21. Responsive Breakpoints (Mobile-First)
+   ============================================ */
+
+/* Tablet (>= 768px) */
+@media (min-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .main-media {
+    max-width: 300px;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+  }
+
+  .success-image {
+    max-width: 350px;
+    max-height: 420px;
+  }
+
+  .typing-text {
+    font-size: 1.5rem;
+  }
+
+  .content {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Desktop (>= 1024px) */
+@media (min-width: 1024px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .main-media {
+    max-width: 400px;
+  }
+
+  .btn {
+    padding: 16px 40px;
+    font-size: 1.2rem;
+  }
+
+  .success-image {
+    max-width: 420px;
+    max-height: 500px;
+    border-radius: 24px;
+  }
+
+  .typing-text {
+    font-size: 1.7rem;
+  }
+
+  .media-area {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .button-group {
+    gap: var(--spacing-lg);
+  }
+}
