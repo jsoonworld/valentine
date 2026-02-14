@@ -22,7 +22,8 @@
       "Bash(pip3 show:*)",
       "Bash(ls:*)",
       "Bash(md5:*)",
-      "Bash(gh:*)"
+      "Bash(gh:*)",
+      "Bash(git rm:*)"
     ]
   }
 }
