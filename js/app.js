@@ -5,7 +5,6 @@
 const STATE = {
   escapeCount: 0,
   yesScale: 1.0,
-  isMuted: true,
   isSuccessScreen: false,
 };
 
@@ -23,57 +22,6 @@ const NO_MESSAGES = [
   '정말 정말?',
   '마지막 기회야!',
 ];
-
-// ============================================================
-// Audio
-// ============================================================
-
-const AUDIO = {
-  bgm: null,
-  pop: null,
-  success: null,
-};
-
-function initAudio() {
-  AUDIO.bgm = new Audio('assets/audio/bgm.mp3');
-  AUDIO.bgm.loop = true;
-  AUDIO.bgm.volume = 0.3;
-
-  AUDIO.pop = new Audio('assets/audio/pop.mp3');
-  AUDIO.pop.volume = 0.5;
-
-  AUDIO.success = new Audio('assets/audio/success.mp3');
-  AUDIO.success.volume = 0.6;
-}
-
-function handleFirstInteraction() {
-  if (!AUDIO.bgm) initAudio();
-  if (!STATE.isMuted) {
-    AUDIO.bgm.play().catch(function () {});
-  }
-  document.removeEventListener('click', handleFirstInteraction);
-  document.removeEventListener('touchstart', handleFirstInteraction);
-}
-
-function playSound(name) {
-  if (STATE.isMuted || !AUDIO[name]) return;
-  AUDIO[name].currentTime = 0;
-  AUDIO[name].play().catch(function () {});
-}
-
-function toggleMute() {
-  if (!AUDIO.bgm) initAudio();
-
-  STATE.isMuted = !STATE.isMuted;
-  var toggleBtn = document.getElementById('bgm-toggle');
-  toggleBtn.textContent = STATE.isMuted ? '\uD83D\uDD07' : '\uD83D\uDD0A';
-
-  if (STATE.isMuted) {
-    if (AUDIO.bgm) AUDIO.bgm.pause();
-  } else {
-    if (AUDIO.bgm) AUDIO.bgm.play().catch(function () {});
-  }
-}
 
 // ============================================================
 // Haptic feedback
@@ -162,7 +110,6 @@ function handleEscape(e) {
 
   growYesButton(btnYes);
   updateNoButtonText(btnNo);
-  playSound('pop');
   triggerHaptic();
 }
 
@@ -176,7 +123,6 @@ function showSuccessScreen() {
   document.getElementById('main-screen').classList.add('hidden');
   document.getElementById('success-screen').classList.remove('hidden');
 
-  playSound('success');
   launchConfetti();
   startTypingEffect('Yay! \uD574\uD53C \uBC1C\uB80C\uD0C0\uC778\uB370\uC774 \u2764\uFE0F');
 }
@@ -203,6 +149,85 @@ function startTypingEffect(message, speed) {
 }
 
 // ============================================================
+// Mouse glow effect
+// ============================================================
+
+function initMouseGlow() {
+  var glow = document.getElementById('mouse-glow');
+
+  document.addEventListener('mousemove', function (e) {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  document.addEventListener('touchmove', function (e) {
+    var touch = e.touches[0];
+    glow.style.left = touch.clientX + 'px';
+    glow.style.top = touch.clientY + 'px';
+  }, { passive: true });
+}
+
+// ============================================================
+// Floating photos
+// ============================================================
+
+var FLOAT_PHOTOS = [
+  'assets/images/float-1.jpg',
+  'assets/images/float-2.jpg',
+  'assets/images/float-3.jpg',
+  'assets/images/float-4.jpg',
+  'assets/images/float-5.jpg',
+];
+var FLOAT_INTERVAL_MS = 2500;
+var floatQueue = [];
+var floatZoneIndex = 0;
+
+function shuffleFloatQueue() {
+  floatQueue = FLOAT_PHOTOS.slice();
+  for (var i = floatQueue.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = floatQueue[i];
+    floatQueue[i] = floatQueue[j];
+    floatQueue[j] = tmp;
+  }
+}
+
+function spawnFloatPhoto() {
+  if (floatQueue.length === 0) shuffleFloatQueue();
+
+  var container = document.getElementById('float-container');
+  var img = document.createElement('img');
+  img.classList.add('float-photo');
+  img.src = floatQueue.pop();
+
+  // Divide screen into 5 zones so photos spread out
+  var zoneWidth = 100 / 5;
+  var zoneStart = floatZoneIndex * zoneWidth;
+  img.style.left = (zoneStart + Math.random() * zoneWidth) + '%';
+  floatZoneIndex = (floatZoneIndex + 1) % 5;
+
+  img.style.bottom = '-160px';
+  var isMobile = window.innerWidth < 768;
+  var size = isMobile
+    ? 110 + Math.floor(Math.random() * 50)
+    : 140 + Math.floor(Math.random() * 60);
+  img.style.width = size + 'px';
+  img.style.height = size + 'px';
+  img.style.setProperty('--float-duration', (12 + Math.random() * 6) + 's');
+  container.appendChild(img);
+
+  img.addEventListener('animationend', function () {
+    img.remove();
+  });
+}
+
+function startFloatingPhotos() {
+  shuffleFloatQueue();
+  spawnFloatPhoto();
+  setInterval(spawnFloatPhoto, FLOAT_INTERVAL_MS);
+}
+
+// ============================================================
 // Heart particles
 // ============================================================
 
@@ -216,7 +241,7 @@ function spawnHeart() {
   heart.textContent = HEART_CHARS[Math.floor(Math.random() * HEART_CHARS.length)];
   heart.style.left = (Math.random() * 100) + 'vw';
   heart.style.animationDuration = (4 + Math.random() * 4) + 's';
-  heart.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+  heart.style.fontSize = (1.5 + Math.random() * 1.5) + 'rem';
   container.appendChild(heart);
 
   heart.addEventListener('animationend', function () {
@@ -259,16 +284,13 @@ function launchConfetti() {
 function init() {
   var btnYes = document.getElementById('btn-yes');
   var btnNo = document.getElementById('btn-no');
-  var bgmToggle = document.getElementById('bgm-toggle');
 
   bindNoButtonEvents(btnNo);
   btnYes.addEventListener('click', showSuccessScreen);
-  bgmToggle.addEventListener('click', toggleMute);
-
-  document.addEventListener('click', handleFirstInteraction, { once: true });
-  document.addEventListener('touchstart', handleFirstInteraction, { once: true });
 
   startHeartParticles();
+  startFloatingPhotos();
+  initMouseGlow();
 }
 
 document.addEventListener('DOMContentLoaded', init);

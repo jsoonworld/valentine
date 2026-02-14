@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git -C:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(open:*)",
+      "Bash(sips:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(screencapture:*)",
+      "Bash(pip3 install:*)",
+      "Bash(playwright install:*)",
+      "Bash(python3.12 -m pip install playwright)",
+      "Bash(python3.12 -m playwright install:*)",
+      "Bash(pip3 show:*)",
+      "Bash(ls:*)",
+      "Bash(md5:*)",
+      "Bash(gh:*)"
+    ]
+  }
+}

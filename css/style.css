@@ -47,7 +47,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: var(--color-bg);
+  background: linear-gradient(160deg, #ffe0ec 0%, #fff0f3 30%, #fce4ec 60%, #f8bbd0 100%);
   font-family: var(--font-main);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
@@ -67,7 +67,7 @@ button {
 /* ----- 3. Utility Classes ----- */
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* ----- 4. Screen Layout ----- */
@@ -79,45 +79,69 @@ button {
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
   z-index: 1;
+  overflow-y: auto;
 }
 
-/* ----- 5. BGM Toggle ----- */
+/* ----- 5. Mouse Glow ----- */
 
-.bgm-toggle {
+.mouse-glow {
   position: fixed;
-  top: var(--spacing-md);
-  right: var(--spacing-md);
-  z-index: 100;
-  width: 44px;
-  height: 44px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  font-size: 1.25rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color var(--transition-speed) ease,
-              transform var(--transition-speed) ease;
-  box-shadow: 0 2px 8px rgba(89, 13, 34, 0.1);
+  background: radial-gradient(circle, rgba(255, 77, 109, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: left 0.3s ease-out, top 0.3s ease-out;
+  left: 50%;
+  top: 50%;
 }
 
-.bgm-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-  transform: scale(1.1);
+/* ----- 5b. Floating Photos Container ----- */
+
+.float-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
 }
 
-.bgm-toggle:active {
-  transform: scale(0.95);
+.float-photo {
+  position: absolute;
+  border-radius: 14px;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(201, 24, 74, 0.2);
+  animation: floatPhoto var(--float-duration, 14s) ease-in-out forwards;
 }
 
-/* ----- 6. Hearts Container ----- */
+@keyframes floatPhoto {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(-4deg) scale(0.7);
+  }
+  6% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.35;
+    transform: translateY(-40vh) rotate(4deg) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-90vh) rotate(-2deg) scale(0.7);
+  }
+}
+
+/* ----- 5c. Hearts Container ----- */
 
 .hearts-container {
   position: fixed;
@@ -126,7 +150,7 @@ button {
   right: 0;
   bottom: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 4;
   overflow: hidden;
 }
 
@@ -140,6 +164,7 @@ button {
   padding: var(--spacing-md);
   max-width: 500px;
   width: 100%;
+  margin: auto;
 }
 
 /* ----- 8. Media Area ----- */
@@ -150,6 +175,8 @@ button {
 
 .main-media {
   max-width: 200px;
+  max-height: 35vh;
+  object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(201, 24, 74, 0.15);
 }
@@ -157,13 +184,13 @@ button {
 /* ----- 9. Title ----- */
 
 .title {
-  font-family: var(--font-accent);
-  font-size: 1.4rem;
+  font-family: var(--font-main);
+  font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   margin: 0 0 var(--spacing-lg);
   line-height: 1.4;
-  text-shadow: 0 1px 2px rgba(201, 24, 74, 0.1);
+  white-space: nowrap;
 }
 
 /* ----- 10. Button Group ----- */
@@ -246,7 +273,7 @@ button {
 .heart {
   position: absolute;
   bottom: -20px;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   opacity: 0;
   animation: floatHeart 6s ease-in forwards;
   pointer-events: none;
@@ -269,7 +296,7 @@ button {
 /* ----- 16. Success Screen ----- */
 
 .screen--success {
-  background-color: var(--color-success-bg);
+  background: linear-gradient(160deg, #fce4ec 0%, #ffe5ec 30%, #fff0f3 60%, #f8bbd0 100%);
   z-index: 2;
   flex-direction: column;
 }
@@ -283,6 +310,7 @@ button {
   z-index: 3;
   max-width: 500px;
   width: 100%;
+  margin: auto;
 }
 
 /* ----- 17. Success Image ----- */
@@ -357,7 +385,7 @@ button {
 /* Tablet (>= 768px) */
 @media (min-width: 768px) {
   .title {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .main-media {
@@ -386,7 +414,7 @@ button {
 /* Desktop (>= 1024px) */
 @media (min-width: 1024px) {
   .title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .main-media {

@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Will You Be My Valentine?</title>
 
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💝</text></svg>">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Will You Be My Valentine?">
+  <meta property="og:description" content="특별한 발렌타인 메시지가 도착했어요 💕">
+  <meta property="og:image" content="assets/images/og-preview.jpg">
+  <meta property="og:type" content="website">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,13 +23,14 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <button id="bgm-toggle" class="bgm-toggle" aria-label="음악 켜기/끄기">🔇</button>
+  <div id="mouse-glow" class="mouse-glow"></div>
+  <div id="float-container" class="float-container"></div>
   <div id="hearts-container" class="hearts-container"></div>
 
   <main id="main-screen" class="screen screen--main">
     <div class="content">
       <div class="media-area">
-        <img id="main-gif" src="assets/gif/placeholder.gif" alt="발렌타인" class="main-media">
+        <img id="main-gif" src="assets/images/cat-main.jpg" alt="발렌타인" class="main-media">
       </div>
       <h1 class="title">윤경,, will you be my valentine?</h1>
       <div class="button-group">
@@ -34,7 +44,7 @@
     <div id="confetti-container" class="confetti-container"></div>
     <div class="success-content">
       <div class="success-media">
-        <img src="assets/images/placeholder.png" alt="우리 사진" class="success-image">
+        <img src="assets/images/cat-success.jpg" alt="우리 사진" class="success-image">
       </div>
       <p id="typing-text" class="typing-text"></p>
     </div>
