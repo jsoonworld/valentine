@@ -275,8 +275,10 @@ function isOverlappingYesButton(x, y, btnRect) {
 function getRandomPosition(buttonEl) {
   var MARGIN = 20;
   var btnRect = buttonEl.getBoundingClientRect();
-  var maxX = window.innerWidth - btnRect.width - MARGIN;
-  var maxY = window.innerHeight - btnRect.height - MARGIN;
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  var maxX = Math.max(MARGIN, vw - btnRect.width - MARGIN);
+  var maxY = Math.max(MARGIN, vh - btnRect.height - MARGIN);
 
   var x, y;
   var attempts = 0;
@@ -285,6 +287,10 @@ function getRandomPosition(buttonEl) {
     y = MARGIN + Math.random() * (maxY - MARGIN);
     attempts++;
   } while (isOverlappingYesButton(x, y, btnRect) && attempts < 100);
+
+  // 뷰포트 밖으로 절대 나가지 않도록 클램핑
+  x = Math.max(0, Math.min(x, vw - btnRect.width));
+  y = Math.max(0, Math.min(y, vh - btnRect.height));
 
   return { x: x, y: y };
 }
