@@ -366,6 +366,10 @@ function handleEscape(e) {
   var rect = btnNo.getBoundingClientRect();
   spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
 
+  // 텍스트를 먼저 변경해야 정확한 width로 위치 계산 가능
+  updateNoButtonText(btnNo);
+  growYesButton(btnYes);
+
   var pos = getRandomPosition(btnNo);
   btnNo.classList.add('escaped');
   btnNo.style.left = pos.x + 'px';
@@ -374,8 +378,6 @@ function handleEscape(e) {
   var noScale = Math.max(0.35, 1 - STATE.escapeCount * 0.007);
   btnNo.style.transform = 'scale(' + noScale + ')';
 
-  growYesButton(btnYes);
-  updateNoButtonText(btnNo);
   updateProgressBar();
   applyStage();
   triggerHaptic();
