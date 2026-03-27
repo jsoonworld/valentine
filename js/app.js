@@ -440,10 +440,6 @@ function showSuccessScreen() {
       launchConfetti();
     }, 5500);
 
-    // 6.0s — D-day counter
-    setTimeout(function () {
-      showDday();
-    }, 6000);
   }, 400);
 }
 
