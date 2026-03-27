@@ -94,7 +94,7 @@ button {
   display: flex;
   justify-content: center;
   z-index: 1;
-  overflow-y: auto;
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -308,7 +308,8 @@ button {
 /* ----- 14. No Button — Escaped State ----- */
 
 .btn--no.escaped {
-  position: absolute;
+  position: fixed;
+  z-index: 16;
   max-width: 70vw;
   white-space: nowrap;
   overflow: hidden;

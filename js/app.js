@@ -259,24 +259,41 @@ function applyStage() {
 // No-button escape logic
 // ============================================================
 
-function isOverlappingYesButton(x, y, btnRect) {
+function isOverlappingYesButton(x, y, noW, noH) {
   var btnYes = document.getElementById('btn-yes');
-  var yesRect = btnYes.getBoundingClientRect();
+  // getBoundingClientRect()는 transform: scale() 적용 후의 시각적 크기를 반환.
+  // Yes 버튼이 scale(5)이면 화면 전체를 덮어서 왼쪽이 전부 거부됨 → 오른쪽 편향.
+  // 해결: offsetWidth/offsetHeight (레이아웃 크기, scale 무관) + 중심점으로 원본 영역 계산.
+  var scaledRect = btnYes.getBoundingClientRect();
+  var originalW = btnYes.offsetWidth;
+  var originalH = btnYes.offsetHeight;
+  var centerX = scaledRect.left + scaledRect.width / 2;
+  var centerY = scaledRect.top + scaledRect.height / 2;
+
+  var yesLeft   = centerX - originalW / 2;
+  var yesRight  = centerX + originalW / 2;
+  var yesTop    = centerY - originalH / 2;
+  var yesBottom = centerY + originalH / 2;
+
   var padding = 20;
 
   return !(
-    x + btnRect.width + padding < yesRect.left ||
-    x - padding > yesRect.right ||
-    y + btnRect.height + padding < yesRect.top ||
-    y - padding > yesRect.bottom
+    x + noW + padding < yesLeft ||
+    x - padding > yesRight ||
+    y + noH + padding < yesTop ||
+    y - padding > yesBottom
   );
 }
 
 function getRandomPosition(buttonEl) {
   var MARGIN = 20;
-  var btnRect = buttonEl.getBoundingClientRect();
-  var maxX = window.innerWidth - btnRect.width - MARGIN;
-  var maxY = window.innerHeight - btnRect.height - MARGIN;
+  // offsetWidth/offsetHeight는 transform: scale()과 무관한 레이아웃 크기.
+  // left/top CSS 속성은 레이아웃 좌표계이므로 offsetWidth 기준으로 계산해야
+  // 화면 밖으로 안 나가고 좌우 균등한 분포가 됨.
+  var btnW = buttonEl.offsetWidth;
+  var btnH = buttonEl.offsetHeight;
+  var maxX = window.innerWidth - btnW - MARGIN;
+  var maxY = window.innerHeight - btnH - MARGIN;
 
   var x, y;
   var attempts = 0;
@@ -284,7 +301,7 @@ function getRandomPosition(buttonEl) {
     x = MARGIN + Math.random() * (maxX - MARGIN);
     y = MARGIN + Math.random() * (maxY - MARGIN);
     attempts++;
-  } while (isOverlappingYesButton(x, y, btnRect) && attempts < 100);
+  } while (isOverlappingYesButton(x, y, btnW, btnH) && attempts < 100);
 
   return { x: x, y: y };
 }
