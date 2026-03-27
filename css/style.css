@@ -19,10 +19,21 @@
   --font-accent: 'Dancing Script', cursive;
 
   /* Spacing */
+  --spacing-xs: 6px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 40px;
+  --spacing-2xl: 56px;
+
+  /* Card */
+  --card-padding: 32px 28px;
+  --card-margin-inline: 20px;
+  --card-bg: rgba(255, 255, 255, 0.35);
+  --card-border: rgba(255, 255, 255, 0.5);
+  --card-shadow: 0 8px 32px rgba(201, 24, 74, 0.10),
+                 0 2px 8px rgba(201, 24, 74, 0.06);
+  --card-blur: 16px;
 
   /* Button */
   --btn-radius: 12px;
@@ -46,12 +57,20 @@ body {
   padding: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background: linear-gradient(160deg, #ffe0ec 0%, #fff0f3 30%, #fce4ec 60%, #f8bbd0 100%);
+  background-image: linear-gradient(160deg, #ffe0ec 0%, #fff0f3 30%, #fce4ec 60%, #f8bbd0 100%);
+  background-size: 400% 400%;
+  animation: bgBreath 15s ease infinite;
   font-family: var(--font-main);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes bgBreath {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 img {
@@ -64,13 +83,7 @@ button {
   font-family: inherit;
 }
 
-/* ----- 3. Utility Classes ----- */
-
-.hidden {
-  display: none !important;
-}
-
-/* ----- 4. Screen Layout ----- */
+/* ----- 3. Screen Layout + Fade Transitions ----- */
 
 .screen {
   position: fixed;
@@ -81,10 +94,21 @@ button {
   display: flex;
   justify-content: center;
   z-index: 1;
-  overflow-y: auto;
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
-/* ----- 5. Mouse Glow ----- */
+.screen--active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ----- 4. Mouse Glow ----- */
 
 .mouse-glow {
   position: fixed;
@@ -100,7 +124,7 @@ button {
   top: 50%;
 }
 
-/* ----- 5b. Floating Photos Container ----- */
+/* ----- 5. Floating Photos Container ----- */
 
 .float-container {
   position: fixed;
@@ -141,7 +165,7 @@ button {
   }
 }
 
-/* ----- 5c. Hearts Container ----- */
+/* ----- 6. Hearts Container ----- */
 
 .hearts-container {
   position: fixed;
@@ -154,22 +178,30 @@ button {
   overflow: hidden;
 }
 
-/* ----- 7. Main Screen Content ----- */
+/* ----- 7. Main Screen Content — Glassmorphism ----- */
 
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--spacing-md);
+  padding: var(--card-padding);
   max-width: 500px;
-  width: 100%;
+  width: calc(100% - var(--card-margin-inline) * 2);
   margin: auto;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--card-blur));
+  -webkit-backdrop-filter: blur(var(--card-blur));
+  border-radius: 28px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow),
+              inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 /* ----- 8. Media Area ----- */
 
 .media-area {
+  margin-top: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -181,15 +213,19 @@ button {
   box-shadow: 0 8px 30px rgba(201, 24, 74, 0.15);
 }
 
-/* ----- 9. Title ----- */
+/* ----- 9. Title — Gradient Text ----- */
 
 .title {
   font-family: var(--font-main);
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--color-primary-dark);
-  margin: 0 0 var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary), #e91e63);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: var(--spacing-sm) 0 var(--spacing-lg);
   line-height: 1.4;
+  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
@@ -201,6 +237,7 @@ button {
   justify-content: center;
   gap: var(--spacing-md);
   flex-wrap: wrap;
+  margin-top: var(--spacing-xs);
 }
 
 /* ----- 11. Base Button ----- */
@@ -220,13 +257,23 @@ button {
               box-shadow var(--transition-speed) ease;
 }
 
-/* ----- 12. Yes Button ----- */
+/* ----- 12. Yes Button — Glow Pulse ----- */
 
 .btn--yes {
   background-color: var(--color-primary);
   color: var(--color-white);
   border: 2px solid var(--color-primary);
   box-shadow: 0 4px 15px rgba(255, 77, 109, 0.35);
+  animation: yesGlow 2s ease-in-out infinite;
+}
+
+@keyframes yesGlow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.35);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(255, 77, 109, 0.6), 0 0 40px rgba(255, 77, 109, 0.2);
+  }
 }
 
 .btn--yes:hover {
@@ -259,10 +306,10 @@ button {
   transform: scale(0.97);
 }
 
-/* ----- 14. No Button - Escaped State ----- */
+/* ----- 14. No Button — Escaped State ----- */
 
 .btn--no.escaped {
-  position: absolute;
+  position: fixed;
   max-width: 70vw;
   white-space: nowrap;
   overflow: hidden;
@@ -298,30 +345,107 @@ button {
   }
 }
 
-/* ----- 16. Success Screen ----- */
+/* ----- 16. Burst Heart Animation ----- */
+
+.burst-heart {
+  position: fixed;
+  font-size: 1.4rem;
+  pointer-events: none;
+  z-index: 20;
+  animation: burstOut 0.6s ease-out forwards;
+}
+
+@keyframes burstOut {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--burst-x), var(--burst-y)) scale(0.3);
+  }
+}
+
+/* ----- 17. Heart Progress Bar ----- */
+
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 15;
+  overflow: visible;
+  transition: opacity 0.5s ease;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-primary), var(--color-primary-dark));
+  border-radius: 0 2px 2px 0;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-bar__heart {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 4px rgba(201, 24, 74, 0.3));
+}
+
+/* ----- 18. Success Screen — Animated Gradient ----- */
 
 .screen--success {
-  background: linear-gradient(160deg, #fce4ec 0%, #ffe5ec 30%, #fff0f3 60%, #f8bbd0 100%);
+  background-image: linear-gradient(160deg, #fce4ec 0%, #ffe5ec 30%, #fff0f3 60%, #f8bbd0 100%);
+  background-size: 200% 200%;
+  animation: successGradient 10s ease infinite;
   z-index: 2;
   flex-direction: column;
 }
+
+@keyframes successGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ----- 19. Success Content — Glassmorphism ----- */
 
 .success-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--spacing-md);
+  padding: var(--card-padding);
   z-index: 3;
   max-width: 500px;
-  width: 100%;
+  width: calc(100% - var(--card-margin-inline) * 2);
   margin: auto;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--card-blur));
+  -webkit-backdrop-filter: blur(var(--card-blur));
+  border-radius: 28px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow),
+              inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
-/* ----- 17. Success Image ----- */
+/* ----- 20. Success Image ----- */
 
 .success-media {
+  margin-top: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.success-media--visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .success-image {
@@ -332,19 +456,68 @@ button {
   object-fit: cover;
 }
 
-/* ----- 18. Typing Text ----- */
+/* ----- 21. Typing Text + Cursor ----- */
 
 .typing-text {
   font-family: var(--font-main);
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--color-primary-dark);
-  margin: var(--spacing-md) 0 0;
+  margin: var(--spacing-md) 0 var(--spacing-sm);
   min-height: 2em;
-  line-height: 1.6;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  white-space: pre-line;
 }
 
-/* ----- 19. Confetti Container ----- */
+.typing-text--typing::after {
+  content: '|';
+  animation: blink 0.5s step-end infinite;
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ----- 22. Twinkle Particles ----- */
+
+.twinkle {
+  position: fixed;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  z-index: 1;
+  animation: twinkle var(--twinkle-duration, 2s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ----- 23. D-day Counter ----- */
+
+.dday-counter {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: var(--spacing-md);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.dday-counter--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----- 24. Confetti ----- */
 
 .confetti-container {
   position: fixed;
@@ -356,8 +529,6 @@ button {
   z-index: 10;
   overflow: hidden;
 }
-
-/* ----- 20. Confetti Piece Animation ----- */
 
 .confetti-piece {
   position: absolute;
@@ -384,11 +555,15 @@ button {
 }
 
 /* ============================================
-   21. Responsive Breakpoints (Mobile-First)
+   25. Responsive Breakpoints (Mobile-First)
    ============================================ */
 
-/* Tablet (>= 768px) */
 @media (min-width: 768px) {
+  :root {
+    --card-padding: 36px 32px;
+    --card-margin-inline: 32px;
+  }
+
   .title {
     font-size: 1.6rem;
   }
@@ -410,14 +585,14 @@ button {
   .typing-text {
     font-size: 1.5rem;
   }
-
-  .content {
-    padding: var(--spacing-lg);
-  }
 }
 
-/* Desktop (>= 1024px) */
 @media (min-width: 1024px) {
+  :root {
+    --card-padding: 48px 44px;
+    --card-margin-inline: 40px;
+  }
+
   .title {
     font-size: 2rem;
   }
@@ -447,5 +622,24 @@ button {
 
   .button-group {
     gap: var(--spacing-lg);
+  }
+}
+
+/* ----- 26. Reduced Motion ----- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .float-photo,
+  .heart,
+  .burst-heart,
+  .twinkle {
+    display: none !important;
   }
 }
