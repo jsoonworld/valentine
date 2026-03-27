@@ -263,11 +263,6 @@ button {
 
 .btn--no.escaped {
   position: absolute;
-  max-width: 70vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: clamp(0.7rem, 2.5vw, 1rem);
   transition: left 0.2s ease-out,
               top 0.2s ease-out,
               transform var(--transition-speed) ease;
